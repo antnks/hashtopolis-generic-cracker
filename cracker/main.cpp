@@ -65,19 +65,7 @@ int main(int argc, char *argv[])
 	QThread *thread;
 	if(action.compare("keyspace") == 0)
 	{
-		int type = 0;
-		QString value = "";
-		if(parser.value(maskOption).length() > 0)
-		{
-			type = 1;
-			value = parser.value(maskOption);
-		}
-		else if(parser.value(wordlistOption).length() > 0)
-		{
-			type = 2;
-			value = parser.value(wordlistOption);
-		}
-		thread = new KeyspaceThread(type, value);
+		thread = new KeyspaceThread(0, "");
 	}
 	else if(action.compare("crack") == 0)
 	{
@@ -85,19 +73,7 @@ int main(int argc, char *argv[])
 		long long int length = parser.value(lengthOption).toLong();
 		int timeout = parser.value(timeoutOption).toInt();
 		QString hashlist = parser.value(hashlistOption);
-		int type = 0;
-		QString attack = "";
-		if(parser.value(maskOption).length() > 0)
-		{
-			type = 1;
-			attack = parser.value(maskOption);
-		}
-		else if(parser.value(wordlistOption).length() > 0)
-		{
-			type = 2;
-			attack = parser.value(wordlistOption);
-		}
-		thread = new RunThread(type, attack, hashlist, skip, length, timeout);
+		thread = new RunThread(0, "", hashlist, skip, length, timeout);
 	}
 	else
 	{
