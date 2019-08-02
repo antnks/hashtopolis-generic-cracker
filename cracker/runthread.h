@@ -13,26 +13,26 @@
 
 class RunThread : public QThread
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    RunThread(int type, QString attack, QString hashlist, long long int skip, long long int length, int timeout);
+	RunThread(int type, QString attack, QString hashlist, long long int skip, long long int length, int timeout);
 
 private:
-    int type;
-    QString attack;
-    long long int skip;
-    long long int length;
-    QString hashlist;
-    int timeout;
+	int type;
+	QString attack;
+	long long int skip;
+	long long int length;
+	QString hashlist;
+	int timeout;
 
-    QFile *wordlistFile;
-    QTextStream *inputStream;
+	QFile *wordlistFile;
+	QTextStream *inputStream;
 
-    QList<QString> hashes;
+	QList<QString> hashes;
 
-    void run() override;
-    int gotoSkipFile();
-    bool getNext(QString &combo, long long pos);
+	void run() override;
+	int gotoSkipFile();
+	bool getNext(QString &combo, long long pos);
 };
 
 #endif // RUNTHREAD_H

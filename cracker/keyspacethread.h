@@ -10,15 +10,15 @@
 
 class KeyspaceThread : public QThread
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    KeyspaceThread(int type, QString value);
+	KeyspaceThread(int type, QString value);
 
 private:
-    int type;
-    QString value;
+	int type;
+	QString value;
 
-    void run();
+	void run();
 };
 
 #endif // KEYSPACETHREAD_H
