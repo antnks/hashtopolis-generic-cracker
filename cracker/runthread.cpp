@@ -2,7 +2,8 @@
 #include <utility>
 using namespace std;
 
-RunThread::RunThread(int type, QString attack, QString hashlist, long long skip, long long length, int timeout){
+RunThread::RunThread(int type, QString attack, QString hashlist, long long skip, long long length, int timeout)
+{
 	this->type = type;
 	this->attack = std::move(attack);
 	this->skip = skip;
@@ -11,16 +12,20 @@ RunThread::RunThread(int type, QString attack, QString hashlist, long long skip,
 	this->timeout = timeout;
 }
 
-void RunThread::run(){
-	if(this->type != 1 && this->type != 2){
+void RunThread::run()
+{
+	if(this->type != 1 && this->type != 2)
+	{
 		cerr << "Invalid attack type!" << endl;
 		return;
 	}
-	else if(this->attack.length() == 0){
+	else if(this->attack.length() == 0)
+	{
 		cerr << "Attack type with invalid input!" << endl;
 		return;
 	}
-	else if(this->hashlist.length() == 0){
+	else if(this->hashlist.length() == 0)
+	{
 		cerr << "No hashlist provided!" << endl;
 		return;
 	}
@@ -28,7 +33,8 @@ void RunThread::run(){
 	// load hashes
 	//qDebug() << "Loading hashes...";
 	QFile file(this->hashlist);
-	if(!file.exists()){
+	if(!file.exists())
+	{
 		cerr << "Hashlist file does not exist: " << this->hashlist.toStdString() << endl;
 		return;
 	}
@@ -36,9 +42,11 @@ void RunThread::run(){
 	file.open(QIODevice::ReadOnly);
 	QTextStream in(&file);
 	QString line;
-	while( !in.atEnd()){
+	while( !in.atEnd())
+	{
 		line = in.readLine();
-		if(line.length() == 0){
+		if(line.length() == 0)
+		{
 			continue;
 		}
 		this->hashes.append(line);
@@ -47,17 +55,21 @@ void RunThread::run(){
 	file.close();
 	//qDebug() << hashCounter << "hashes loaded!";
 
-	if(this->type == 2){
+	if(this->type == 2)
+	{
 		//qDebug() << "Open and prepare wordlist!";
 		this->wordlistFile = new QFile(this->attack);
-		if(!this->wordlistFile->exists()){
+		if(!this->wordlistFile->exists())
+		{
 			cerr << "Wordlist file does not exist: " << this->attack.toStdString() << endl;
 			return;
 		}
 		this->wordlistFile->open(QIODevice::ReadOnly);
 		this->inputStream = new QTextStream(this->wordlistFile);
-		if(this->skip > 0){
-			if(this->gotoSkipFile() != 0){
+		if(this->skip > 0)
+		{
+			if(this->gotoSkipFile() != 0)
+			{
 				return;
 			}
 		}
@@ -71,19 +83,22 @@ void RunThread::run(){
 	time_t lastUpdate = time(NULL);
 	long long int lastCounter = 0;
 	time_t startTime = time(NULL);
-	while(this->getNext(combo, lengthCounter)){
+	while(this->getNext(combo, lengthCounter))
+	{
 		// calculate hash of combo
 		hash = QString(QCryptographicHash::hash(combo.toUtf8(), QCryptographicHash::Md5).toHex());
 
 		// check if in hashlist
-		if(this->hashes.contains(hash)){
+		if(this->hashes.contains(hash))
+		{
 			// found
 			cout << hash.toStdString() << ":" << combo.toStdString() << endl;
 			this->hashes.removeOne(hash);
 			crackedCounter++;
 		}
 
-		if(time(NULL) - lastUpdate >= 5){
+		if(time(NULL) - lastUpdate >= 5)
+		{
 			// show update
 			cout << "STATUS " << (int)floor((double)lengthCounter/this->length*10000) << " " << (int)(((double)(lengthCounter - lastCounter))/(time(NULL) - lastUpdate)) << endl;
 			lastCounter = lengthCounter;
@@ -91,10 +106,12 @@ void RunThread::run(){
 		}
 
 		lengthCounter++;
-		if(lengthCounter >= this->length){
+		if(lengthCounter >= this->length)
+		{
 			break; // we reached length limit
 		}
-		else if(timeout > 0 && time(NULL) - startTime > timeout){
+		else if(timeout > 0 && time(NULL) - startTime > timeout)
+		{
 			cout << "STATUS " << (int)floor((double)lengthCounter/this->length*10000) << " " << (int)(((double)(lengthCounter - lastCounter))/(time(NULL) - lastUpdate)) << endl;
 			return;
 		}
@@ -104,9 +121,12 @@ void RunThread::run(){
 	//qDebug() << "Cracked:" << crackedCounter;
 }
 
-int RunThread::gotoSkipFile(){
-	for(long long int i=0;i<this->skip;i++){
-		if(this->inputStream->atEnd()){
+int RunThread::gotoSkipFile()
+{
+	for(long long int i=0;i<this->skip;i++)
+	{
+		if(this->inputStream->atEnd())
+		{
 			cerr << "Skip value too large for wordlist!" << endl;
 			return -1;
 		}
@@ -115,13 +135,16 @@ int RunThread::gotoSkipFile(){
 	return 0;
 }
 
-bool RunThread::getNext(QString &combo, long long int pos){
-	if(this->type == 1){
+bool RunThread::getNext(QString &combo, long long int pos)
+{
+	if(this->type == 1)
+	{
 		// TODO mask combinations
 		return false;
 	}
 	else{
-		if(this->inputStream->atEnd()){
+		if(this->inputStream->atEnd())
+		{
 			cerr << "Wordlist not large enough to satisfy length!" << endl;
 			return false;
 		}

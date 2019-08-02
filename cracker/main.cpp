@@ -6,7 +6,8 @@
 #include "runthread.h"
 using namespace std;
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[])
+{
 	QCoreApplication a(argc, argv);
 
 	QCoreApplication::setApplicationName("generic-cracker");
@@ -57,37 +58,44 @@ int main(int argc, char *argv[]){
 	//qDebug() << "Executing action: " + action;
 
 	QThread *thread;
-	if(action.compare("keyspace") == 0){
+	if(action.compare("keyspace") == 0)
+	{
 		int type = 0;
 		QString value = "";
-		if(parser.value(maskOption).length() > 0){
+		if(parser.value(maskOption).length() > 0)
+		{
 			type = 1;
 			value = parser.value(maskOption);
 		}
-		else if(parser.value(wordlistOption).length() > 0){
+		else if(parser.value(wordlistOption).length() > 0)
+		{
 			type = 2;
 			value = parser.value(wordlistOption);
 		}
 		thread = new KeyspaceThread(type, value);
 	}
-	else if(action.compare("crack") == 0){
+	else if(action.compare("crack") == 0)
+	{
 		long long int skip = parser.value(skipOption).toLong();
 		long long int length = parser.value(lengthOption).toLong();
 		int timeout = parser.value(timeoutOption).toInt();
 		QString hashlist = parser.value(hashlistOption);
 		int type = 0;
 		QString attack = "";
-		if(parser.value(maskOption).length() > 0){
+		if(parser.value(maskOption).length() > 0)
+		{
 			type = 1;
 			attack = parser.value(maskOption);
 		}
-		else if(parser.value(wordlistOption).length() > 0){
+		else if(parser.value(wordlistOption).length() > 0)
+		{
 			type = 2;
 			attack = parser.value(wordlistOption);
 		}
 		thread = new RunThread(type, attack, hashlist, skip, length, timeout);
 	}
-	else{
+	else
+	{
 		cerr << "Invalid action!" << endl;
 		return -1;
 	}
