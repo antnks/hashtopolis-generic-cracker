@@ -1,6 +1,6 @@
 # Hashtopolis Stdin Cracker
 
-Generic cracker for Hashtopolis that supports hascat in stdin mode.
+Generic cracker for Hashtopolis that supports hashcat in stdin mode.
 
 
 ## Building
