@@ -53,6 +53,11 @@ int main(int argc, char *argv[])
 	parser.parse(a.arguments());
 
 	const QStringList args = parser.positionalArguments();
+	if(!args.size())
+	{
+		cerr << "No params specified" << endl;
+		return -1;
+	}
 	QString action = args.at(0);
 
 	//qDebug() << "Executing action: " + action;
