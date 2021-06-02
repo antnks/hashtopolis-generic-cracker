@@ -33,5 +33,7 @@ void RunThread::run()
 	process.setProcessChannelMode(QProcess::ForwardedChannels);
 	process.start(cmd);
 	process.waitForFinished(-1); // will wait forever until finished
+	
+	cout << "STATUS 10000 0" << endl;
 
 }
